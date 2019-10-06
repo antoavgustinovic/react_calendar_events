@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 // import { useSetState } from 'react-use';
 import style from './LoginPage.module.css';
 import GoogleLogin from 'react-google-login';
-import { get } from './../../services/api';
 import { Route, Redirect } from 'react-router';
 
 function LoginPage(props) {
@@ -17,7 +16,7 @@ function LoginPage(props) {
   const responseGoogle = (response) => {
     console.log(response);
     // signUp(response);
-    localStorage.setItem('accessToken', response.accessToken);
+    localStorage.setItem('accessToken', response.Zi.access_token);
     localStorage.setItem('loggedIn', true);
     props.history.push('/home');
   };
