@@ -5,8 +5,10 @@
   "dependencies": {
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
+    "react-google-login": "^5.0.5",
     "react-router-dom": "^5.1.1",
-    "react-scripts": "3.1.2"
+    "react-scripts": "3.1.2",
+    "react-use": "^12.2.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -30,7 +32,7 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^6.1.0",
+    "eslint": "^6.5.1",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-node": "^4.0.0",
     "eslint-config-prettier": "^6.3.0",
@@ -38,8 +40,8 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-react": "^7.14.3",
-    "eslint-plugin-react-hooks": "^1.7.0",
+    "eslint-plugin-react": "^7.15.0",
+    "eslint-plugin-react-hooks": "^2.1.1",
     "prettier": "^1.18.2"
   }
 }
