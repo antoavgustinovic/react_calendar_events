@@ -1,26 +1,28 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, Fragment } from 'react';
-import { useAsync } from 'react-use';
+import { useAsync, useSetState } from 'react-use';
 import { GoogleLogout } from 'react-google-login';
 import style from './HomePage.module.css';
 import { get } from './../../services/api';
 import EventList from './Events/EventList';
 
 function HomePage(props) {
-  //   const logout = () => {
-  //     // console.log(response);
-  //     localStorage.setItem('loggedIn', false);
-  //     props.history.push('/login');
-  //   };
+  let today = new Date();
+  let thisWeek = new Date();
+  let thisMonth = new Date();
+  thisWeek.setDate(today.getDate() + 7);
+  thisMonth.setDate(today.getDate() + 31);
 
-  // const [events, setEvents] = useState([]);
+  const [params, setParams] = useSetState({
+    timeMin: today.toISOString(),
+    singleEvents: true,
+    orderBy: 'startTime',
+    showDeleted: false,
+  });
 
-  const { loading, value: events, error } = useAsync(get);
-  // console.log('OUTPUT: HomePage -> error', error);
-  // console.log('OUTPUT: HomePage -> loading', loading);
-  if (events) console.log('OUTPUT: HomePage -> events', events);
+  const { loading, value: events, error } = useAsync(get.bind(null, params));
 
   const logout = () => {
-    // console.log(response);
     localStorage.setItem('loggedIn', false);
     localStorage.removeItem('accessToken');
     props.history.push('/login');
@@ -39,7 +41,11 @@ function HomePage(props) {
         <h1>Calendar Events</h1>
       </header>
       <Fragment>
-        {loading ? <div>Loading...</div> : <EventList events={events} />}
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <EventList events={events} today={today} thisWeek={thisWeek} />
+        )}
       </Fragment>
     </div>
   );

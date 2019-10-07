@@ -1,21 +1,12 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-// import { useSetState } from 'react-use';
 import style from './LoginPage.module.css';
 import GoogleLogin from 'react-google-login';
 import { Route, Redirect } from 'react-router';
 
 function LoginPage(props) {
-  // const [isLogged, setIsLogged] = useState(false);
-
-  // const signUp = (data) => {
-  //   console.log(data);
-  //   get(data.accessToken).then((data) => console.log(data));
-  //   props.history.push('/home');
-  // };
-
   const responseGoogle = (response) => {
     console.log(response);
-    // signUp(response);
     localStorage.setItem('accessToken', response.Zi.access_token);
     localStorage.setItem('loggedIn', true);
     props.history.push('/home');

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import style from './Event.module.css';
 
@@ -21,10 +22,12 @@ function Event({ id, event }) {
       {event.summary}{' '}
       <div>
         <h4>
-          {formatDate(event.start.dateTime)}{' '}
-          <h5>
-            {formatTime(event.start.dateTime)}-{formatTime(event.end.dateTime)}
-          </h5>
+          {event.start.dateTime ? formatDate(event.start.dateTime) : ''}{' '}
+          {event.start.dateTime && event.end.dateTime
+            ? `${formatTime(event.start.dateTime)}-${formatTime(
+                event.end.dateTime,
+              )}`
+            : `${formatDate(event.start.date)}- ${formatDate(event.end.date)}`}
         </h4>
       </div>
       <hr />

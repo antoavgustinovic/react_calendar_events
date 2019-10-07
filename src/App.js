@@ -1,6 +1,6 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
-import { useHistory } from 'react-router';
 import './App.css';
 import LoginPage from './Components/Login/LoginPage';
 import HomePage from './Components/HomePage/HomePage';

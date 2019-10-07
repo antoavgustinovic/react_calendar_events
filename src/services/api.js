@@ -1,6 +1,11 @@
-export function get(model) {
+export function get(params) {
+  const str = Object.entries(params)
+    .map(([key, val]) => `${key}=${val}`)
+    .join('&');
+  console.log('OUTPUT: get -> params', str);
+
   return fetch(
-    `https://www.googleapis.com/calendar/v3/calendars/primary/events`,
+    `https://www.googleapis.com/calendar/v3/calendars/primary/events?${str}`,
     {
       method: 'GET',
       headers: {
