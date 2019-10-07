@@ -2,19 +2,18 @@
 import React from 'react';
 import Event from './Event';
 
-function EventList({
-  events,
-  currTime,
-  next7Days = '',
-  next30Days = '',
-  nextDay = '',
-}) {
+function EventList({ events, displayEvents }) {
   let sortedEvents;
-  //   let startDay = new Date();
-  //   let endDay = new Date();
-  //   startDay.setHours(0, 0, 0, 0);
-  //   endDay.setHours(23, 59, 59, 999);
 
+  let currTime = new Date();
+  let nextDay = new Date();
+  let next7Days = new Date();
+  let next30Days = new Date();
+  nextDay.setDate(currTime.getDate() + 1);
+  next7Days.setDate(currTime.getDate() + 7);
+  next30Days.setDate(currTime.getDate() + 31);
+
+  // Function for sorting events based on $displayEvents
   const sortedEventsFunction = (endTime) => {
     return events.items.filter((event) =>
       event.start.dateTime
@@ -25,8 +24,10 @@ function EventList({
     );
   };
 
-  if (next7Days) sortedEvents = sortedEventsFunction(next7Days);
-  else if (next30Days) sortedEvents = sortedEventsFunction(next30Days);
+  if (displayEvents === 'next7Days')
+    sortedEvents = sortedEventsFunction(next7Days);
+  else if (displayEvents === 'next30Days')
+    sortedEvents = sortedEventsFunction(next30Days);
   else sortedEvents = sortedEventsFunction(nextDay);
 
   return sortedEvents.map((event) => <Event key={event.id} event={event} />);

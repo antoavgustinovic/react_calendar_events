@@ -8,13 +8,6 @@ import EventList from './Events/EventList';
 
 function HomePage(props) {
   let currTime = new Date();
-  let nextDay = new Date();
-  let next7Days = new Date();
-  let next30Days = new Date();
-  nextDay.setDate(currTime.getDate() + 1);
-  next7Days.setDate(currTime.getDate() + 7);
-  next30Days.setDate(currTime.getDate() + 31);
-
   // parameters for getting the events from API
   const [params, setParams] = useSetState({
     timeMin: currTime.toISOString(),
@@ -66,19 +59,11 @@ function HomePage(props) {
         {loading ? (
           <div>Loading...</div>
         ) : displayEvents === 'next7Days' ? (
-          <EventList
-            events={events}
-            currTime={currTime}
-            next7Days={next7Days}
-          />
+          <EventList events={events} displayEvents="next7Days" />
         ) : displayEvents === 'next30Days' ? (
-          <EventList
-            events={events}
-            currTime={currTime}
-            next30Days={next30Days}
-          />
+          <EventList events={events} displayEvents="next30Days" />
         ) : (
-          <EventList events={events} currTime={currTime} nextDay={nextDay} />
+          <EventList events={events} displayEvents="nextDay" />
         )}
       </Fragment>
     </div>
