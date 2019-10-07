@@ -2,28 +2,32 @@
 import React from 'react';
 import Event from './Event';
 
-function EventList({ events, today, thisWeek = '', thisMonth = '' }) {
-  console.log('OUTPUT: EventList -> thisMonth', thisMonth);
-  console.log('OUTPUT: EventList -> today', today);
-  console.log('OUTPUT: EventList -> thisWeek', thisWeek);
-  console.log('OUTPUT: EventList -> events', events);
-
+function EventList({
+  events,
+  currTime,
+  next7Days = '',
+  next30Days = '',
+  nextDay = '',
+}) {
   let sortedEvents;
-  const sortedEventsFunction = (timeSpan) => {
+  //   let startDay = new Date();
+  //   let endDay = new Date();
+  //   startDay.setHours(0, 0, 0, 0);
+  //   endDay.setHours(23, 59, 59, 999);
+
+  const sortedEventsFunction = (endTime) => {
     return events.items.filter((event) =>
       event.start.dateTime
-        ? event.start.dateTime >= today.toISOString() &&
-          event.end.dateTime <= timeSpan.toISOString()
-        : event.start.date >= today.toISOString() &&
-          event.end.date <= timeSpan.toISOString(),
+        ? event.start.dateTime >= currTime.toISOString() &&
+          event.end.dateTime <= endTime.toISOString()
+        : event.start.date >= currTime.toISOString() &&
+          event.end.date <= endTime.toISOString(),
     );
   };
 
-  if (thisWeek) sortedEvents = sortedEventsFunction(thisWeek);
-  else if (thisMonth) sortedEvents = sortedEventsFunction(thisMonth);
-  else sortedEvents = sortedEventsFunction(today);
-
-  console.log('OUTPUT: EventList -> sortedEvents', sortedEvents);
+  if (next7Days) sortedEvents = sortedEventsFunction(next7Days);
+  else if (next30Days) sortedEvents = sortedEventsFunction(next30Days);
+  else sortedEvents = sortedEventsFunction(nextDay);
 
   return sortedEvents.map((event) => <Event key={event.id} event={event} />);
 }
