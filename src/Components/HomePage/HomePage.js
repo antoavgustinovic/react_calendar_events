@@ -3,11 +3,13 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { useAsync, useSetState } from 'react-use';
 import { GoogleLogout } from 'react-google-login';
 import style from './HomePage.module.css';
-import { get } from './../../services/api';
+import { getEvents } from './../../services/api';
 import EventList from './Events/EventList';
+import AddEvent from './Events/AddEvent';
 
 function HomePage(props) {
   let currTime = new Date();
+
   // parameters for getting the events from API
   const [params, setParams] = useSetState({
     timeMin: currTime.toISOString(),
@@ -17,7 +19,9 @@ function HomePage(props) {
   });
 
   //fetching events
-  const { loading, value: events, error } = useAsync(get.bind(null, params));
+  const { loading, value: events, error } = useAsync(
+    getEvents.bind(null, params),
+  );
 
   //logout
   const logout = () => {
@@ -35,7 +39,7 @@ function HomePage(props) {
   return (
     <div>
       <header className={style.header}>
-        <div className={style.btn}>
+        <div className={style.gbtn}>
           <GoogleLogout
             clientId="695308344557-qaep1rg6cr8v58u7alojih9f9lggnk29.apps.googleusercontent.com"
             buttonText="Logout"
@@ -53,6 +57,9 @@ function HomePage(props) {
           <button onClick={handleSubmit} name="next30Days">
             Next 30 days
           </button>
+        </div>
+        <div>
+          <AddEvent />
         </div>
       </header>
       <Fragment>

@@ -1,4 +1,4 @@
-export function get(params) {
+export function getEvents(params) {
   const str = Object.entries(params)
     .map(([key, val]) => `${key}=${val}`)
     .join('&');
@@ -16,13 +16,19 @@ export function get(params) {
   ).then((response) => response.json());
 }
 
-export function post(model, body, headers) {
+export function addEvent(body) {
+  console.log('OUTPUT: addEvent -> body', JSON.stringify(body));
+
   return fetch(
-    `https://www.googleapis.com/calendar/v3/calendars/primary/events/${model}`,
+    `https://www.googleapis.com/calendar/v3/calendars/primary/events`,
     {
       method: 'POST',
-      body,
-      headers,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        Accept: 'application/json',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(body),
     },
   );
 }

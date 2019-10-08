@@ -3,6 +3,7 @@ import React from 'react';
 import Event from './Event';
 
 function EventList({ events, displayEvents }) {
+  console.log('OUTPUT: EventList -> events', events);
   let sortedEvents;
 
   let currTime = new Date();
