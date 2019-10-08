@@ -15,11 +15,18 @@ function formatDate(date) {
   return `${day}.${month}.${year}`;
 }
 
-function Event({ id, event }) {
-  //   return <div></div>;
+function Event({ event, deleteEventFunction }) {
+  console.log('OUTPUT: Event -> event', event);
   return (
     <div>
+      <hr />
       {event.summary}{' '}
+      <button
+        onClick={deleteEventFunction.bind(this, event.id)}
+        className={style.btnStyle}
+      >
+        x
+      </button>
       <div>
         <h4>
           {event.start.dateTime ? formatDate(event.start.dateTime) : ''}{' '}

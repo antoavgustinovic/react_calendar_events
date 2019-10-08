@@ -2,7 +2,7 @@
 import React from 'react';
 import Event from './Event';
 
-function EventList({ events, displayEvents }) {
+function EventList({ events, displayEvents, deleteEventFunction }) {
   console.log('OUTPUT: EventList -> events', events);
   let sortedEvents;
 
@@ -14,8 +14,8 @@ function EventList({ events, displayEvents }) {
   next7Days.setDate(currTime.getDate() + 7);
   next30Days.setDate(currTime.getDate() + 31);
 
-  // Function for sorting events based on $displayEvents
-  const sortedEventsFunction = (endTime) => {
+  // Function for filtering events based on $displayEvents
+  const filterEventsFunction = (endTime) => {
     return events.items.filter((event) =>
       event.start.dateTime
         ? event.start.dateTime >= currTime.toISOString() &&
@@ -26,12 +26,18 @@ function EventList({ events, displayEvents }) {
   };
 
   if (displayEvents === 'next7Days')
-    sortedEvents = sortedEventsFunction(next7Days);
+    sortedEvents = filterEventsFunction(next7Days);
   else if (displayEvents === 'next30Days')
-    sortedEvents = sortedEventsFunction(next30Days);
-  else sortedEvents = sortedEventsFunction(nextDay);
+    sortedEvents = filterEventsFunction(next30Days);
+  else sortedEvents = filterEventsFunction(nextDay);
 
-  return sortedEvents.map((event) => <Event key={event.id} event={event} />);
+  return sortedEvents.map((event) => (
+    <Event
+      key={event.id}
+      event={event}
+      deleteEventFunction={deleteEventFunction}
+    />
+  ));
 }
 
 export default EventList;

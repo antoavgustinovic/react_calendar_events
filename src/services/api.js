@@ -17,8 +17,6 @@ export function getEvents(params) {
 }
 
 export function addEvent(body) {
-  console.log('OUTPUT: addEvent -> body', JSON.stringify(body));
-
   return fetch(
     `https://www.googleapis.com/calendar/v3/calendars/primary/events`,
     {
@@ -29,6 +27,18 @@ export function addEvent(body) {
         'Content-type': 'application/json',
       },
       body: JSON.stringify(body),
+    },
+  ).then((response) => response.json());
+}
+
+export function delEvent(id) {
+  return fetch(
+    `https://www.googleapis.com/calendar/v3/calendars/primary/events/${id}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
     },
   );
 }

@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSetState, useAsync } from 'react-use';
-import { addEvent } from './../../../services/api';
+import style from './AddEvent.module.css';
 
-function AddEvent() {
+function AddEvent(props) {
   const [state, setState] = useSetState({
-    title: '', //'test 5',
-    startDate: '', //'2019-10-08T18:00:00',
-    endDate: '', //'2019-10-08T19:00:00',
+    title: 'test 5', //'test 5',
+    startDate: '2019-10-08T22:30', //'2019-10-08T18:00',
+    endDate: '2019-10-08T23:00', //'2019-10-08T19:00',
   });
 
   const onChange = (e) => setState({ [e.target.name]: e.target.value });
@@ -27,9 +27,7 @@ function AddEvent() {
       summary: state.title,
     };
 
-    addEvent(body)
-      .then((response) => console.log(response.json()))
-      .then((res) => console.log(res));
+    props.addEventFunction(body);
 
     // setState({
     //   title: '',
@@ -39,12 +37,12 @@ function AddEvent() {
   };
 
   return (
-    <form onSubmit={onSubmit} style={{ display: 'flex', paddingTop: '10px' }}>
-      <label style={{ paddingRight: '5px', color: 'yellow' }}>New Event</label>
+    <form onSubmit={onSubmit} className={style}>
+      <label>New Event</label>
       <input
         type="text"
         name="title"
-        style={{ flex: '10', padding: '5px' }}
+        className={style}
         placeholder="Add title ..."
         value={state.title}
         onChange={onChange}
@@ -52,23 +50,18 @@ function AddEvent() {
       <input
         type="datetime-local"
         name="startDate"
-        style={{ flex: '5', padding: '5px' }}
+        className={style}
         value={state.startDate}
         onChange={onChange}
       />
       <input
         type="datetime-local"
         name="endDate"
-        style={{ flex: '5', padding: '5px' }}
+        className={style}
         value={state.endDate}
         onChange={onChange}
       />
-      <input
-        type="submit"
-        value="Submit"
-        className="btn"
-        style={{ flex: '1' }}
-      />
+      <input className={style} type="submit" value="Submit" className="btn" />
     </form>
   );
 }

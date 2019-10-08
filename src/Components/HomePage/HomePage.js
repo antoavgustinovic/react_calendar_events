@@ -3,7 +3,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { useAsync, useSetState } from 'react-use';
 import { GoogleLogout } from 'react-google-login';
 import style from './HomePage.module.css';
-import { getEvents } from './../../services/api';
+import { getEvents, addEvent, delEvent } from './../../services/api';
 import EventList from './Events/EventList';
 import AddEvent from './Events/AddEvent';
 
@@ -18,10 +18,14 @@ function HomePage(props) {
     showDeleted: false,
   });
 
+  let [eventsData, setEventsData] = useState({});
+
   //fetching events
-  const { loading, value: events, error } = useAsync(
-    getEvents.bind(null, params),
-  );
+  // const {loading: eventList.loading, value:eventList.events, error: eventList.error} = useAsync(
+  //   getEvents.bind(null, params),
+  // );
+  eventsData = useAsync(getEvents.bind(null, params));
+  console.log('OUTPUT: HomePage -> eventsData', eventsData);
 
   //logout
   const logout = () => {
@@ -34,6 +38,37 @@ function HomePage(props) {
   const [displayEvents, setDisplayEvents] = useState('next7Days');
   const handleSubmit = (event) => {
     setDisplayEvents(event.target.name);
+  };
+  // useEffect(() => {
+  const deleteEventFunction = (id) => {
+    delEvent(id).then(() => {
+      setEventsData({
+        value: {
+          items: [...eventsData.value.items.filter((event) => event.id !== id)],
+        },
+      });
+    });
+    console.log(
+      'OUTPUT: deleteEventFunction -> eventsData.value',
+      eventsData.value,
+    );
+  };
+  // });
+
+  const addEventFunction = (body) => {
+    addEvent(body).then((newEvent) => {
+      console.log('OUTPUT: addEventFunction -> newEvent', newEvent);
+
+      setEventsData({
+        value: {
+          items: [...eventsData.value.items, newEvent], // eventsData.value.items.push(newEvent),
+        },
+      });
+      console.log(
+        'OUTPUT: addEventFunction -> eventsData.value',
+        eventsData.value,
+      );
+    });
   };
 
   return (
@@ -48,31 +83,47 @@ function HomePage(props) {
         </div>
         <h1>Calendar Events</h1>
         <div>
-          <button onClick={handleSubmit} name="nextDay">
+          <button onClick={handleSubmit} name="nextDay" className={style.btn}>
             Next 24 Hours
           </button>
-          <button onClick={handleSubmit} name="next7Days">
+          <button onClick={handleSubmit} name="next7Days" className={style.btn}>
             Next 7 days
           </button>
-          <button onClick={handleSubmit} name="next30Days">
+          <button
+            onClick={handleSubmit}
+            name="next30Days"
+            className={style.btn}
+          >
             Next 30 days
           </button>
         </div>
         <div>
-          <AddEvent />
+          <AddEvent addEventFunction={addEventFunction} />
         </div>
       </header>
-      <Fragment>
-        {loading ? (
+      <div>
+        {eventsData.loading ? (
           <div>Loading...</div>
         ) : displayEvents === 'next7Days' ? (
-          <EventList events={events} displayEvents="next7Days" />
+          <EventList
+            events={eventsData.value}
+            displayEvents="next7Days"
+            deleteEventFunction={deleteEventFunction}
+          />
         ) : displayEvents === 'next30Days' ? (
-          <EventList events={events} displayEvents="next30Days" />
+          <EventList
+            events={eventsData.value}
+            displayEvents="next30Days"
+            deleteEventFunction={deleteEventFunction}
+          />
         ) : (
-          <EventList events={events} displayEvents="nextDay" />
+          <EventList
+            events={eventsData.value}
+            displayEvents="nextDay"
+            deleteEventFunction={deleteEventFunction}
+          />
         )}
-      </Fragment>
+      </div>
     </div>
   );
 }
