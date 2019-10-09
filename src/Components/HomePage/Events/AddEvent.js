@@ -4,9 +4,9 @@ import style from './AddEvent.module.css';
 
 function AddEvent(props) {
   const [state, setState] = useSetState({
-    title: 'test 5', //'test 5',
-    startDate: '2019-10-08T22:30', //'2019-10-08T18:00',
-    endDate: '2019-10-08T23:00', //'2019-10-08T19:00',
+    title: '', //'test',
+    startDate: '', //'2019-10-09T22:30',
+    endDate: '', //'2019-10-09T22:30',
   });
 
   const onChange = (e) => setState({ [e.target.name]: e.target.value });
@@ -29,11 +29,11 @@ function AddEvent(props) {
 
     props.addEventFunction(body);
 
-    // setState({
-    //   title: '',
-    //   startDate: '',
-    //   endDate: '',
-    // });
+    setState({
+      title: '',
+      startDate: '',
+      endDate: '',
+    });
   };
 
   return (
