@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { useAsync, useSetState } from 'react-use';
 import { GoogleLogout } from 'react-google-login';
 import style from './HomePage.module.css';
 import { getEvents, addEvent, delEvent } from './../../services/api';
 import EventList from './Events/EventList';
 import AddEvent from './Events/AddEvent';
+import { EventsProvider, EventsContext } from './../../state/EventsContext';
 
 function HomePage(props) {
   let currTime = new Date();
@@ -18,14 +19,21 @@ function HomePage(props) {
     showDeleted: false,
   });
 
-  let [eventsData, setEventsData] = useState({});
+  // let [eventsData, setEventsData] = useState({});
+  let [state, setState] = useContext(EventsContext);
 
   //fetching events
-  // const {loading: eventList.loading, value:eventList.events, error: eventList.error} = useAsync(
-  //   getEvents.bind(null, params),
-  // );
-  eventsData = useAsync(getEvents.bind(null, params));
-  console.log('OUTPUT: HomePage -> eventsData', eventsData);
+  state = useAsync(getEvents.bind(null, params));
+
+  // useEffect(() => {
+  //   if (state.loading === false)
+  //     setState((state) => ({
+  //       ...state,
+  //       events: state.value.items,
+  //     }));
+  // }, [state.loading, setState]);
+
+  console.log('OUTPUT: HomePage -> state', state);
 
   //logout
   const logout = () => {
@@ -39,35 +47,28 @@ function HomePage(props) {
   const handleSubmit = (event) => {
     setDisplayEvents(event.target.name);
   };
-  // useEffect(() => {
+
   const deleteEventFunction = (id) => {
     delEvent(id).then(() => {
-      setEventsData({
+      setState({
         value: {
-          items: [...eventsData.value.items.filter((event) => event.id !== id)],
+          items: [...state.value.items.filter((event) => event.id !== id)],
         },
       });
     });
-    console.log(
-      'OUTPUT: deleteEventFunction -> eventsData.value',
-      eventsData.value,
-    );
+    console.log('OUTPUT: deleteEventFunction -> eventsData.value', state.value);
   };
-  // });
 
   const addEventFunction = (body) => {
     addEvent(body).then((newEvent) => {
       console.log('OUTPUT: addEventFunction -> newEvent', newEvent);
 
-      setEventsData({
+      setState({
         value: {
-          items: [...eventsData.value.items, newEvent], // eventsData.value.items.push(newEvent),
+          items: [...state.value.items, newEvent], // eventsData.value.items.push(newEvent),
         },
       });
-      console.log(
-        'OUTPUT: addEventFunction -> eventsData.value',
-        eventsData.value,
-      );
+      console.log('OUTPUT: addEventFunction -> eventsData.value', state.value);
     });
   };
 
@@ -102,23 +103,23 @@ function HomePage(props) {
         </div>
       </header>
       <div>
-        {eventsData.loading ? (
+        {state.loading ? (
           <div>Loading...</div>
         ) : displayEvents === 'next7Days' ? (
           <EventList
-            events={eventsData.value}
+            events={state.value}
             displayEvents="next7Days"
             deleteEventFunction={deleteEventFunction}
           />
         ) : displayEvents === 'next30Days' ? (
           <EventList
-            events={eventsData.value}
+            events={state.value}
             displayEvents="next30Days"
             deleteEventFunction={deleteEventFunction}
           />
         ) : (
           <EventList
-            events={eventsData.value}
+            events={state.value}
             displayEvents="nextDay"
             deleteEventFunction={deleteEventFunction}
           />

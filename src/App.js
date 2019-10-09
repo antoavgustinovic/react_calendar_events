@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import './App.css';
 import LoginPage from './Components/Login/LoginPage';
 import HomePage from './Components/HomePage/HomePage';
+import { EventsProvider } from './state/EventsContext';
 
 function App() {
   const loggedIn = localStorage.getItem('loggedIn');
@@ -17,13 +18,15 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
-        <Route exact path="/">
-          {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}
-        </Route>
-        <Route exact path="/home" component={HomePage} />
-        <Route path="/login" component={LoginPage} />
-      </div>
+      <EventsProvider>
+        <div className="App">
+          <Route exact path="/">
+            {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}
+          </Route>
+          <Route path="/home" component={HomePage} />
+          <Route path="/login" component={LoginPage} />
+        </div>
+      </EventsProvider>
     </Router>
   );
 }

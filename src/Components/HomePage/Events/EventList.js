@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { Fragment } from 'react';
 import Event from './Event';
 
 function EventList({ events, displayEvents, deleteEventFunction }) {
@@ -31,13 +31,17 @@ function EventList({ events, displayEvents, deleteEventFunction }) {
     sortedEvents = filterEventsFunction(next30Days);
   else sortedEvents = filterEventsFunction(nextDay);
 
-  return sortedEvents.map((event) => (
-    <Event
-      key={event.id}
-      event={event}
-      deleteEventFunction={deleteEventFunction}
-    />
-  ));
+  return (
+    <Fragment>
+      {sortedEvents.map((event) => (
+        <Event
+          key={event.id}
+          event={event}
+          deleteEventFunction={deleteEventFunction}
+        />
+      ))}
+    </Fragment>
+  );
 }
 
 export default EventList;
