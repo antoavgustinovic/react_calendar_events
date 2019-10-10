@@ -4,7 +4,6 @@ import style from './Header.module.css';
 import AddEvent from './../HomePage/Events/AddEvent';
 
 function Header(props) {
-  console.log('OUTPUT: Header -> props', props);
   // Logout
   const logout = () => {
     localStorage.setItem('loggedIn', false);
