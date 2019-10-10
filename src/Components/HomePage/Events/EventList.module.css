@@ -1,0 +1,19 @@
+.dayLabel {
+  font-weight: bold;
+}
+
+.listToday {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 20px;
+  grid-auto-rows: minmax(100px, auto);
+  margin: 5px 5px;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 20px;
+  grid-auto-rows: minmax(100px, auto);
+  margin: 5px 5px;
+}

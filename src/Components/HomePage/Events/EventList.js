@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { Fragment } from 'react';
 import Event from './Event';
+import style from './EventList.module.css';
 
 function EventList({ events, displayEvents, deleteEventFunction }) {
   console.log('OUTPUT: EventList -> events', events);
@@ -33,13 +34,34 @@ function EventList({ events, displayEvents, deleteEventFunction }) {
 
   return (
     <Fragment>
-      {sortedEvents.map((event) => (
-        <Event
-          key={event.id}
-          event={event}
-          deleteEventFunction={deleteEventFunction}
-        />
-      ))}
+      <div className={style.list}>
+        {/* {sortedEvents.map((event) => (
+          <div>
+            <label className={style.dayLabel}>
+              {currTime.getDate()}.{currTime.getDate()}.{currTime.getFullYear()}
+              .
+            </label>
+            <Event
+              key={event.id}
+              event={event}
+              deleteEventFunction={deleteEventFunction}
+            />
+          </div>
+        ))} */}
+        <div>
+          <label className={style.dayLabel}>
+            {currTime.getDate()}.{currTime.getMonth() + 1}.
+            {currTime.getFullYear()}.
+          </label>
+          {sortedEvents.map((event) => (
+            <Event
+              key={event.id}
+              event={event}
+              deleteEventFunction={deleteEventFunction}
+            />
+          ))}
+        </div>
+      </div>
     </Fragment>
   );
 }

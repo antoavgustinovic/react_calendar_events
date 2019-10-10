@@ -4,6 +4,8 @@ import { useAsync, useSetState } from 'react-use';
 import style from './HomePage.module.css';
 import { getEvents, addEvent, delEvent } from './../../services/api';
 import EventList from './Events/EventList';
+import EventList7Days from './Events/EventList7Days';
+import EventListToday from './Events/EventListToday';
 
 import Header from './../Layout/Header';
 
@@ -33,7 +35,7 @@ function HomePage(props) {
   // Delete event
   const deleteEventFunction = (id) => {
     delEvent(id).then(() => {
-      // This should remove event from array but it doesn't (should rerender too)
+      // This should remove event from array but it doesn't (should re-render too)
       setEventsData({
         value: {
           items: [...eventsData.value.items.filter((event) => event.id !== id)],
@@ -46,7 +48,7 @@ function HomePage(props) {
   const addEventFunction = (body) => {
     addEvent(body).then((newEvent) => {
       console.log('OUTPUT: addEventFunction -> newEvent', newEvent);
-      // This should add event to a array but it doesn't (should rerender too)
+      // This should add event to a array but it doesn't (should re-render too)
       setEventsData({
         value: {
           items: [...eventsData.value.items, newEvent], // eventsData.value.items.push(newEvent),
@@ -66,9 +68,8 @@ function HomePage(props) {
         {eventsData.loading ? (
           <div>Loading...</div>
         ) : displayEvents === 'next7Days' ? (
-          <EventList
+          <EventList7Days
             events={eventsData.value}
-            displayEvents="next7Days"
             deleteEventFunction={deleteEventFunction}
           />
         ) : displayEvents === 'next30Days' ? (
@@ -78,7 +79,7 @@ function HomePage(props) {
             deleteEventFunction={deleteEventFunction}
           />
         ) : (
-          <EventList
+          <EventListToday
             events={eventsData.value}
             displayEvents="nextDay"
             deleteEventFunction={deleteEventFunction}

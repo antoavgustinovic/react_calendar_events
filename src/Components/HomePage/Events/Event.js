@@ -16,11 +16,10 @@ function formatDate(date) {
 }
 
 function Event({ event, deleteEventFunction }) {
-  console.log('OUTPUT: Event -> event', event);
+  // console.log('OUTPUT: Event -> event', event);
   return (
-    <div>
-      <hr />
-      {event.summary}{' '}
+    <div className={style.block}>
+      {event.summary}
       <button
         onClick={deleteEventFunction.bind(this, event.id)}
         className={style.btnStyle}
@@ -37,7 +36,6 @@ function Event({ event, deleteEventFunction }) {
             : `${formatDate(event.start.date)}- ${formatDate(event.end.date)}`}
         </h4>
       </div>
-      <hr />
     </div>
   );
 }
