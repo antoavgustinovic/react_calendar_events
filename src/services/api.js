@@ -2,7 +2,6 @@ export function getEvents(params) {
   const str = Object.entries(params)
     .map(([key, val]) => `${key}=${val}`)
     .join('&');
-  console.log('OUTPUT: get -> params', str);
 
   return fetch(
     `https://www.googleapis.com/calendar/v3/calendars/primary/events?${str}`,
@@ -13,7 +12,9 @@ export function getEvents(params) {
         Accept: 'application/json',
       },
     },
-  ).then((response) => response.json());
+  )
+    .then((response) => response.json())
+    .then((res) => res.items);
 }
 
 export function addEvent(body) {

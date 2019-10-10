@@ -18,11 +18,20 @@ function HomePage(props) {
     showDeleted: false,
   });
 
-  let [eventsData, setEventsData] = useState({});
+  const [eventsData, setEventsData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // fetching events
-  eventsData = useAsync(getEvents.bind(null, params));
-  console.log('OUTPUT: HomePage -> eventsData', eventsData);
+  useEffect(() => {
+    setLoading(true);
+    getEvents(params).then((res) => {
+      setEventsData(res);
+      setLoading(false);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // console.log('OUTPUT: HomePage -> eventsData', eventsData);
 
   // determining time span to display
   const [displayEvents, setDisplayEvents] = useState('next7Days');
@@ -34,24 +43,26 @@ function HomePage(props) {
   const deleteEventFunction = (id) => {
     delEvent(id).then(() => {
       // This should remove event from array but it doesn't (should rerender too)
-      setEventsData({
-        value: {
-          items: [...eventsData.value.items.filter((event) => event.id !== id)],
-        },
-      });
+      setEventsData([...eventsData.filter((event) => event.id !== id)]);
     });
   };
 
   // Create new event
   const addEventFunction = (body) => {
     addEvent(body).then((newEvent) => {
-      console.log('OUTPUT: addEventFunction -> newEvent', newEvent);
+      // console.log('OUTPUT: addEventFunction -> newEvent', newEvent);
       // This should add event to a array but it doesn't (should rerender too)
-      setEventsData({
-        value: {
-          items: [...eventsData.value.items, newEvent], // eventsData.value.items.push(newEvent),
-        },
-      });
+      setEventsData(
+        [...eventsData, newEvent].sort((a, b) =>
+          b.start.dateTime && a.start.dateTime
+            ? a.start.dateTime.localeCompare(b.start.dateTime)
+            : b.start.date && a.start.date
+            ? a.start.date.localeCompare(b.start.date)
+            : b.start.dateTime && a.start.date
+            ? a.start.date.localeCompare(b.start.dateTime)
+            : a.start.dateTime.localeCompare(b.start.date),
+        ),
+      );
     });
   };
 
@@ -63,24 +74,12 @@ function HomePage(props) {
         props={props}
       />
       <div>
-        {eventsData.loading ? (
+        {loading ? (
           <div>Loading...</div>
-        ) : displayEvents === 'next7Days' ? (
-          <EventList
-            events={eventsData.value}
-            displayEvents="next7Days"
-            deleteEventFunction={deleteEventFunction}
-          />
-        ) : displayEvents === 'next30Days' ? (
-          <EventList
-            events={eventsData.value}
-            displayEvents="next30Days"
-            deleteEventFunction={deleteEventFunction}
-          />
         ) : (
           <EventList
-            events={eventsData.value}
-            displayEvents="nextDay"
+            events={eventsData}
+            displayEvents={displayEvents}
             deleteEventFunction={deleteEventFunction}
           />
         )}

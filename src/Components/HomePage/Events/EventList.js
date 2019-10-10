@@ -3,7 +3,6 @@ import React, { Fragment } from 'react';
 import Event from './Event';
 
 function EventList({ events, displayEvents, deleteEventFunction }) {
-  console.log('OUTPUT: EventList -> events', events);
   let sortedEvents;
 
   let currTime = new Date();
@@ -16,7 +15,7 @@ function EventList({ events, displayEvents, deleteEventFunction }) {
 
   // Function for filtering events based on $displayEvents
   const filterEventsFunction = (endTime) => {
-    return events.items.filter((event) =>
+    return events.filter((event) =>
       event.start.dateTime
         ? event.start.dateTime >= currTime.toISOString() &&
           event.end.dateTime <= endTime.toISOString()
