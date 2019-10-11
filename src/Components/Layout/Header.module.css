@@ -9,12 +9,18 @@
   text-align: right;
 }
 
+h1 {
+  font-size: 50px;
+  margin: 5px;
+}
+
 .btn {
-  background: #00638a;
+  background: #0183b6;
   color: #fff;
-  border: 1px ivory solid;
+  border: none;
   padding: 5px 9px;
-  margin: 0px 2px;
+  margin: 0px 3px;
   border-radius: 5px;
   cursor: pointer;
+  box-shadow: 1px 1px 4px 0px #ffffff;
 }
