@@ -9,6 +9,11 @@
   text-align: right;
 }
 
+h1 {
+  font-size: 50px;
+  margin: 5px;
+}
+
 .btn {
   background: #0183b6;
   color: #fff;

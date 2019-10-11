@@ -78,6 +78,7 @@ function HomePage(props) {
     else if (displayEvents === 'next30Days') endTime = next30Days;
     else endTime = nextDay;
 
+    console.log('OUTPUT: filterEventsFunction -> eventsData', eventsData);
     return eventsData.filter((event) =>
       event.start.dateTime
         ? event.start.dateTime >= currTime.toISOString() &&
@@ -110,7 +111,7 @@ function HomePage(props) {
           // />
           <EventGroupList
             events={filterEventsFunction(displayEvents)}
-            // displayEvents={displayEvents}
+            displayEvents={displayEvents}
             deleteEventFunction={deleteEventFunction}
           />
         )}
