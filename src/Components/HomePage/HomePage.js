@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { useAsync, useSetState } from 'react-use';
-import style from './HomePage.module.css';
+import { useSetState } from 'react-use';
 import { getEvents, addEvent, delEvent } from './../../services/api';
-import EventList from './Events/EventList';
 import EventGroupList from './Events/EventGroupList';
 import Header from './../Layout/Header';
 
@@ -31,8 +29,6 @@ function HomePage(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // console.log('OUTPUT: HomePage -> eventsData', eventsData);
-
   // determining time span to display
   const [displayEvents, setDisplayEvents] = useState('next7Days');
   const handleSubmit = (event) => {
@@ -49,42 +45,45 @@ function HomePage(props) {
   // Create new event
   const addEventFunction = (body) => {
     addEvent(body).then((newEvent) => {
-      // console.log('OUTPUT: addEventFunction -> newEvent', newEvent);
       setEventsData(
-        [...eventsData, newEvent].sort((a, b) =>
-          b.start.dateTime && a.start.dateTime
-            ? a.start.dateTime.localeCompare(b.start.dateTime)
-            : b.start.date && a.start.date
-            ? a.start.date.localeCompare(b.start.date)
-            : b.start.dateTime && a.start.date
-            ? a.start.date.localeCompare(b.start.dateTime)
-            : a.start.dateTime.localeCompare(b.start.date),
+        [...eventsData, newEvent].sort(
+          ({ start: startA }, { start: startB }) => {
+            const aVal = startA.dateTime || startA.date;
+            const bVal = startB.dateTime || startB.date;
+            return aVal.localeCompare(bVal);
+          },
         ),
       );
     });
   };
 
-  let nextDay = new Date();
-  let next7Days = new Date();
-  let next30Days = new Date();
-  nextDay.setDate(currTime.getDate() + 1);
-  next7Days.setDate(currTime.getDate() + 7);
-  next30Days.setDate(currTime.getDate() + 31);
-
   // Function for filtering events based on $displayEvents
   const filterEventsFunction = (displayEvents) => {
-    let endTime;
-    if (displayEvents === 'next7Days') endTime = next7Days;
-    else if (displayEvents === 'next30Days') endTime = next30Days;
-    else endTime = nextDay;
+    const endTime = new Date();
 
-    return eventsData.filter((event) =>
+    if (displayEvents === 'next7Days') {
+      endTime.setDate(currTime.getDate() + 7);
+    } else if (displayEvents === 'next30Days') {
+      endTime.setDate(currTime.getDate() + 31);
+    } else {
+      endTime.setDate(currTime.getDate() + 1);
+    }
+
+    return eventsData.filter((event) => {
+      let start;
+      let end;
       event.start.dateTime
-        ? event.start.dateTime >= currTime.toISOString() &&
-          event.end.dateTime <= endTime.toISOString()
-        : event.start.date >= currTime.toISOString() &&
-          event.end.date <= endTime.toISOString(),
-    );
+        ? (start = new Date(event.start.dateTime))
+        : (start = new Date(event.start.date));
+      event.end.dateTime
+        ? (end = new Date(event.end.dateTime))
+        : (end = new Date(event.end.date));
+
+      return (
+        start.getTime() >= currTime.getTime() &&
+        end.getTime() <= endTime.getTime()
+      );
+    });
   };
 
   return (
@@ -98,14 +97,9 @@ function HomePage(props) {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          // <EventGroupList
-          //   events={eventsData}
-          //   displayEvents={displayEvents}
-          //   deleteEventFunction={deleteEventFunction}
-          // />
-          <EventList
+          <EventGroupList
             events={filterEventsFunction(displayEvents)}
-            // displayEvents={displayEvents}
+            displayEvents={displayEvents}
             deleteEventFunction={deleteEventFunction}
           />
         )}
