@@ -15,9 +15,9 @@ h4 {
 
 .block {
   display: block;
-  background-color: #fff;
-  margin: 0px 0px 3px 0px;
-  box-shadow: 1px 1px 4px 1px #504f4f;
+  background-color: rgba(241, 241, 241, 0.568);
+  margin: 3px 0px 3px 0px;
+  box-shadow: 1px 1px 4px 0px #504f4f;
   border-radius: 10px;
   overflow: hidden;
 }

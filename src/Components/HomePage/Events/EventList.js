@@ -32,7 +32,44 @@ function EventList({ events, deleteEventFunction }) {
   //     filteredEvents = filterEventsFunction(next30Days);
   //   else filteredEvents = filterEventsFunction(nextDay);
 
+  //   const groups = events.reduce((groups, event) => {
+  //     let date;
+  //     event.start.dateTime
+  //       ? (date = event.start.dateTime.split('T')[0])
+  //       : (date = event.start.date.split('T')[0]);
+
+  //     if (!groups[date]) {
+  //       groups[date] = [];
+  //     }
+  //     groups[date].push(event);
+  //     return groups;
+  //   }, {});
+  //   console.log('OUTPUT: groups', groups);
+
+  //   // Edit: to add it in the array format instead
+  //   const groupArrays = Object.keys(groups).map((date) => {
+  //     return {
+  //       date,
+  //       event: groups[date],
+  //     };
+  //   });
+  //   console.log('OUTPUT: groupArrays', groupArrays);
+
   return (
+    // <Fragment>
+    //   <div className={style.list}>
+    //     {groupArrays.map((day) => (
+    //       <div>
+    //         <div>{day.date}</div>
+    //         <Event
+    //           key={day.event.id}
+    //           event={day.event}
+    //           deleteEventFunction={deleteEventFunction}
+    //         />
+    //       </div>
+    //     ))}
+    //   </div>
+    // </Fragment>
     <Fragment>
       <div className={style.list}>
         {events.map((event) => (

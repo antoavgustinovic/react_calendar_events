@@ -103,7 +103,12 @@ function HomePage(props) {
           //   displayEvents={displayEvents}
           //   deleteEventFunction={deleteEventFunction}
           // />
-          <EventList
+          // <EventList
+          //   events={filterEventsFunction(displayEvents)}
+          //   // displayEvents={displayEvents}
+          //   deleteEventFunction={deleteEventFunction}
+          // />
+          <EventGroupList
             events={filterEventsFunction(displayEvents)}
             // displayEvents={displayEvents}
             deleteEventFunction={deleteEventFunction}

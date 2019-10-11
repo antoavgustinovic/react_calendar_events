@@ -16,6 +16,7 @@ function formatDate(date) {
 }
 
 function Event({ event, deleteEventFunction }) {
+  console.log('OUTPUT: Event -> event', event);
   return (
     <div className={style.block}>
       {event.summary}{' '}
