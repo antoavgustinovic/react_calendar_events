@@ -4,7 +4,7 @@ import { useAsync, useSetState } from 'react-use';
 import style from './HomePage.module.css';
 import { getEvents, addEvent, delEvent } from './../../services/api';
 import EventList from './Events/EventList';
-
+import EventGroupList from './Events/EventGroupList';
 import Header from './../Layout/Header';
 
 function HomePage(props) {
@@ -77,6 +77,11 @@ function HomePage(props) {
         {loading ? (
           <div>Loading...</div>
         ) : (
+          // <EventGroupList
+          //   events={eventsData}
+          //   displayEvents={displayEvents}
+          //   deleteEventFunction={deleteEventFunction}
+          // />
           <EventList
             events={eventsData}
             displayEvents={displayEvents}

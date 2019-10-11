@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React, { Fragment } from 'react';
 import Event from './Event';
+import style from './EventList.module.css';
 
 function EventList({ events, displayEvents, deleteEventFunction }) {
-  let sortedEvents;
+  let filteredEvents;
 
   let currTime = new Date();
   let nextDay = new Date();
@@ -25,20 +26,22 @@ function EventList({ events, displayEvents, deleteEventFunction }) {
   };
 
   if (displayEvents === 'next7Days')
-    sortedEvents = filterEventsFunction(next7Days);
+    filteredEvents = filterEventsFunction(next7Days);
   else if (displayEvents === 'next30Days')
-    sortedEvents = filterEventsFunction(next30Days);
-  else sortedEvents = filterEventsFunction(nextDay);
+    filteredEvents = filterEventsFunction(next30Days);
+  else filteredEvents = filterEventsFunction(nextDay);
 
   return (
     <Fragment>
-      {sortedEvents.map((event) => (
-        <Event
-          key={event.id}
-          event={event}
-          deleteEventFunction={deleteEventFunction}
-        />
-      ))}
+      <div className={style.list}>
+        {filteredEvents.map((event) => (
+          <Event
+            key={event.id}
+            event={event}
+            deleteEventFunction={deleteEventFunction}
+          />
+        ))}
+      </div>
     </Fragment>
   );
 }
