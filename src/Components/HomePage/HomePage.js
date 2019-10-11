@@ -42,7 +42,6 @@ function HomePage(props) {
   // Delete event
   const deleteEventFunction = (id) => {
     delEvent(id).then(() => {
-      // This should remove event from array but it doesn't (should rerender too)
       setEventsData([...eventsData.filter((event) => event.id !== id)]);
     });
   };
@@ -51,7 +50,6 @@ function HomePage(props) {
   const addEventFunction = (body) => {
     addEvent(body).then((newEvent) => {
       // console.log('OUTPUT: addEventFunction -> newEvent', newEvent);
-      // This should add event to a array but it doesn't (should rerender too)
       setEventsData(
         [...eventsData, newEvent].sort((a, b) =>
           b.start.dateTime && a.start.dateTime
@@ -64,6 +62,29 @@ function HomePage(props) {
         ),
       );
     });
+  };
+
+  let nextDay = new Date();
+  let next7Days = new Date();
+  let next30Days = new Date();
+  nextDay.setDate(currTime.getDate() + 1);
+  next7Days.setDate(currTime.getDate() + 7);
+  next30Days.setDate(currTime.getDate() + 31);
+
+  // Function for filtering events based on $displayEvents
+  const filterEventsFunction = (displayEvents) => {
+    let endTime;
+    if (displayEvents === 'next7Days') endTime = next7Days;
+    else if (displayEvents === 'next30Days') endTime = next30Days;
+    else endTime = nextDay;
+
+    return eventsData.filter((event) =>
+      event.start.dateTime
+        ? event.start.dateTime >= currTime.toISOString() &&
+          event.end.dateTime <= endTime.toISOString()
+        : event.start.date >= currTime.toISOString() &&
+          event.end.date <= endTime.toISOString(),
+    );
   };
 
   return (
@@ -83,8 +104,8 @@ function HomePage(props) {
           //   deleteEventFunction={deleteEventFunction}
           // />
           <EventList
-            events={eventsData}
-            displayEvents={displayEvents}
+            events={filterEventsFunction(displayEvents)}
+            // displayEvents={displayEvents}
             deleteEventFunction={deleteEventFunction}
           />
         )}
