@@ -5,8 +5,8 @@ import style from './AddEvent.module.css';
 function AddEvent(props) {
   const [state, setState] = useSetState({
     title: 'test', //'test',
-    startDate: '2019-10-10T22:30', //'2019-10-10T22:30',
-    endDate: '2019-10-10T22:30', //'2019-10-10T22:30',
+    startDate: '2019-10-11T22:30', //'2019-10-10T22:30',
+    endDate: '2019-10-11T23:30', //'2019-10-10T22:30',
   });
 
   const onChange = (e) => setState({ [e.target.name]: e.target.value });
@@ -37,8 +37,8 @@ function AddEvent(props) {
   };
 
   return (
-    <form onSubmit={onSubmit} className={style}>
-      <label>New Event</label>
+    <form onSubmit={onSubmit}>
+      <label className={style.headerLabel}>New Event</label>
       <input
         type="text"
         name="title"
