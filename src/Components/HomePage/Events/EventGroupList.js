@@ -1,93 +1,87 @@
 import React from 'react';
 import EventList from './EventList';
 import style from './EventGroupList.module.css';
+import moment from 'moment';
+
+const getDateRangeOfWeek = (day) => {
+  const weekStart = `${moment(day)
+    .startOf('isoweek')
+    .get('date')}.${moment(day)
+    .startOf('isoweek')
+    .get('month') + 1}.${moment(day)
+    .startOf('isoweek')
+    .get('year')}`;
+  const weekEnd = `${moment(day)
+    .endOf('isoweek')
+    .get('date')}.${moment(day)
+    .endOf('isoweek')
+    .get('month') + 1}.${moment(day)
+    .endOf('isoweek')
+    .get('year')}`;
+
+  return `${weekStart} - ${weekEnd}`;
+};
 
 function EventGroupList({ events, displayEvents, deleteEventFunction }) {
-  const groupEventsByNext7Days = () => {
+  const groupEvents = () => {
     // gives an object with dates as keys
     const groups = events.reduce((groups, event) => {
       let day;
-      let week;
+      let days_weeks;
       const options = { weekday: 'long' };
+      //const weekNo = moment().week();
 
       if (event.start.dateTime) {
         day = new Date(event.start.dateTime);
+
         if (displayEvents === 'next7Days' || displayEvents === 'nextDay') {
-          week = day.getDay();
-          week = new Intl.DateTimeFormat('en-US', options).format(day);
+          days_weeks = day.getDay();
+          days_weeks = new Intl.DateTimeFormat('en-US', options).format(day);
         } else {
-          const weekNo = getWeekNo(day);
-          week = getDateRangeOfWeek(day, weekNo);
+          days_weeks = getDateRangeOfWeek(day);
         }
       } else {
         day = new Date(event.start.date);
+
         if (displayEvents === 'next7Days' || displayEvents === 'nextDay') {
-          week = day.getDay();
-          week = new Intl.DateTimeFormat('en-US', options).format(day);
+          days_weeks = day.getDay();
+          days_weeks = new Intl.DateTimeFormat('en-US', options).format(day);
         } else {
-          const weekNo = getWeekNo(day);
-          week = getDateRangeOfWeek(day, weekNo);
+          days_weeks = getDateRangeOfWeek(day);
         }
       }
 
-      if (!groups[week]) {
-        groups[week] = [];
+      if (!groups[days_weeks]) {
+        groups[days_weeks] = [];
       }
-      groups[week].push(event);
+      groups[days_weeks].push(event);
       return groups;
     }, {});
-    console.log('OUTPUT: groups', groups);
 
     // array Format
-    const groupArraysFunc = Object.keys(groups).map((weekDay) => {
+    const groupArrays = Object.keys(groups).map((days) => {
       return {
-        weekDay,
-        events: groups[weekDay],
+        days: days,
+        events: groups[days],
       };
     });
-    console.log('OUTPUT: groupArrays', groupArraysFunc);
 
-    return groupArraysFunc;
-  };
-
-  const getWeekNo = (date) => {
-    const startDate = new Date(date.getFullYear(), 0);
-    let endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    while (endDate.getDay() < 6) endDate.setDate(endDate.getDate() + 1);
-    endDate = endDate.getTime();
-    let weekNo = 0;
-    while (startDate.getTime() < endDate) {
-      if (startDate.getDay() == 4) weekNo++;
-      startDate.setDate(startDate.getDate() + 1);
-    }
-    return weekNo;
-  };
-
-  const getDateRangeOfWeek = (day, weekNo) => {
-    const numOfdaysPastSinceLastMonday = eval(day.getDay() - 1);
-    day.setDate(day.getDate() - numOfdaysPastSinceLastMonday);
-    const weeksInTheFuture = eval(weekNo - weekNo);
-    day.setDate(day.getDate() + eval(7 * weeksInTheFuture));
-    const rangeIsFrom = `${day.getDate()}.${day.getMonth() +
-      1}.${day.getFullYear()}`;
-    day.setDate(day.getDate() + 6);
-    const rangeIsTo = `${day.getDate()}.${day.getMonth() +
-      1}.${day.getFullYear()}`;
-    return `${rangeIsFrom} - ${rangeIsTo}`;
+    return groupArrays;
   };
 
   return (
     <div>
-      {groupEventsByNext7Days().map((day) => (
-        <div>
-          <div className={style.date}>{day.weekDay}</div>
-          <EventList
-            // key={day.event.id}
-            events={day.events}
-            deleteEventFunction={deleteEventFunction}
-          />
-        </div>
-      ))}
+      {groupEvents().map((day) => {
+        return (
+          <div key={day.events[0].id + 1}>
+            <div className={style.date}>{day.days}</div>
+            <EventList
+              events={day.events}
+              deleteEventFunction={deleteEventFunction}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }
