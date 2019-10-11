@@ -73,7 +73,7 @@ function EventGroupList({ events, displayEvents, deleteEventFunction }) {
     day.setDate(day.getDate() + 6);
     const rangeIsTo = `${day.getDate()}.${day.getMonth() +
       1}.${day.getFullYear()}`;
-    return rangeIsFrom + ' to ' + rangeIsTo;
+    return `${rangeIsFrom} - ${rangeIsTo}`;
   };
 
   return (
