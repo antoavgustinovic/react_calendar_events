@@ -14,6 +14,10 @@ function AddEvent(props) {
   const onSubmit = (e) => {
     e.preventDefault();
 
+    if (!canBeSubmitted()) {
+      return;
+    }
+
     const timeZone = 'Europe/Zagreb';
     const body = {
       start: {
@@ -34,6 +38,11 @@ function AddEvent(props) {
       startDate: '',
       endDate: '',
     });
+  };
+
+  const canBeSubmitted = () => {
+    const { title, startDate, endDate } = state;
+    return title.length > 0 && startDate.length > 0 && endDate.length > 0;
   };
 
   return (
@@ -61,7 +70,13 @@ function AddEvent(props) {
         value={state.endDate}
         onChange={onChange}
       />
-      <input className={style} type="submit" value="Submit" className="btn" />
+      <input
+        className={style}
+        disabled={!canBeSubmitted}
+        type="submit"
+        value="Submit"
+        className="btn"
+      />
     </form>
   );
 }
