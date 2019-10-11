@@ -5,20 +5,6 @@ import style from './EventList.module.css';
 
 function EventList({ events, deleteEventFunction }) {
   return (
-    // <Fragment>
-    //   <div className={style.list}>
-    //     {groupArrays.map((day) => (
-    //       <div>
-    //         <div>{day.date}</div>
-    //         <Event
-    //           key={day.event.id}
-    //           event={day.event}
-    //           deleteEventFunction={deleteEventFunction}
-    //         />
-    //       </div>
-    //     ))}
-    //   </div>
-    // </Fragment>
     <Fragment>
       <div className={style.list}>
         {events.map((event) => (
