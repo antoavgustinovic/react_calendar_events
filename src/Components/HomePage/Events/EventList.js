@@ -4,6 +4,7 @@ import Event from './Event';
 import style from './EventList.module.css';
 
 function EventList({ events, deleteEventFunction }) {
+  console.log('OUTPUT: EventList -> events', events);
   return (
     <Fragment>
       <div className={style.list}>

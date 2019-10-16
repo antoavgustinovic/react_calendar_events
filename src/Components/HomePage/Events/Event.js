@@ -20,7 +20,7 @@ function Event({ event, deleteEventFunction }) {
     <div className={style.block}>
       {event.summary}{' '}
       <button
-        onClick={deleteEventFunction.bind(this, event.id)}
+        // onClick={deleteEventFunction.bind(this, event.id)}
         className={style.btnStyle}
       >
         x

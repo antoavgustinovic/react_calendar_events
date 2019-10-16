@@ -1,9 +1,15 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { useSetState } from 'react-use';
-import { getEvents, addEvent, delEvent } from './../../services/api';
+// import {getEvents, addEvent, delEvent } from './../../services/api';
 import EventGroupList from './Events/EventGroupList';
 import Header from './../Layout/Header';
+import { connect } from 'react-redux';
+import {
+  getEvents,
+  addEvent,
+  delEvent,
+} from './../../state/actions/fetchActions';
 
 function HomePage(props) {
   let currTime = new Date();
@@ -16,16 +22,17 @@ function HomePage(props) {
     showDeleted: false,
   });
 
-  const [eventsData, setEventsData] = useState([]);
+  // const [eventsData, setEventsData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // fetching events
   useEffect(() => {
-    setLoading(true);
-    getEvents(params).then((res) => {
-      setEventsData(res);
-      setLoading(false);
-    });
+    // setLoading(true);
+    props.getEvents(params);
+    // getEvents(params).then((res) => {
+    //   setEventsData(res);
+    //   setLoading(false);
+    // });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -36,26 +43,26 @@ function HomePage(props) {
   };
 
   // Delete event
-  const deleteEventFunction = (id) => {
-    delEvent(id).then(() => {
-      setEventsData([...eventsData.filter((event) => event.id !== id)]);
-    });
-  };
+  // const deleteEventFunction = (id) => {
+  //   props.delEvent(id).then(() => {
+  //     // setEventsData([...props.eventsData.filter((event) => event.id !== id)]);
+  //   });
+  // };
 
-  // Create new event
-  const addEventFunction = (body) => {
-    addEvent(body).then((newEvent) => {
-      setEventsData(
-        [...eventsData, newEvent].sort(
-          ({ start: startA }, { start: startB }) => {
-            const aVal = startA.dateTime || startA.date;
-            const bVal = startB.dateTime || startB.date;
-            return aVal.localeCompare(bVal);
-          },
-        ),
-      );
-    });
-  };
+  // // Create new event
+  // const addEventFunction = (body) => {
+  //   props.addEvent(body).then((newEvent) => {
+  //     setEventsData(
+  //       [...props.eventsData, newEvent].sort(
+  //         ({ start: startA }, { start: startB }) => {
+  //           const aVal = startA.dateTime || startA.date;
+  //           const bVal = startB.dateTime || startB.date;
+  //           return aVal.localeCompare(bVal);
+  //         },
+  //       ),
+  //     );
+  //   });
+  // };
 
   // Function for filtering events based on $displayEvents
   const filterEventsFunction = (displayEvents) => {
@@ -69,7 +76,7 @@ function HomePage(props) {
       endTime.setDate(currTime.getDate() + 1);
     }
 
-    return eventsData.filter((event) => {
+    return props.eventsData.filter((event) => {
       let start;
       let end;
       event.start.dateTime
@@ -89,7 +96,7 @@ function HomePage(props) {
   return (
     <div>
       <Header
-        addEventFunction={addEventFunction}
+        // addEventFunction={addEventFunction}
         handleSubmit={handleSubmit}
         props={props}
       />
@@ -100,7 +107,7 @@ function HomePage(props) {
           <EventGroupList
             events={filterEventsFunction(displayEvents)}
             displayEvents={displayEvents}
-            deleteEventFunction={deleteEventFunction}
+            // deleteEventFunction={deleteEventFunction}
           />
         )}
       </div>
@@ -108,4 +115,13 @@ function HomePage(props) {
   );
 }
 
-export default HomePage;
+const mapStateToProps = (state) => ({
+  eventsData: state.events.items,
+  newEvent: state.events.addedItem,
+  deletedEvent: state.events.deletedItem,
+});
+
+export default connect(
+  mapStateToProps,
+  { getEvents, addEvent, delEvent },
+)(HomePage);
