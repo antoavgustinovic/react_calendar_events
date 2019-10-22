@@ -20,7 +20,7 @@ Osim prikazivanja, aplikacija mora podržavati i dodavanje novih događaja, odno
 Što se tiče user interfacea za dodavanje novih događaja, to može bili ili unutar postojeće stranice ili na novoj stranici (ili nekako treće).
 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
 
 ## Available Scripts
 
