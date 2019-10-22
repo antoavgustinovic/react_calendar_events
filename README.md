@@ -1,3 +1,25 @@
+# OPIS ZADATKA
+Potrebno je napraviti JavaScript aplikaciju koristeći React framework koja prikazuje događaje.
+Događaji se trebaju povlačiti s Google Calendar API-a ( https://developers.google.com/calendar/ ) - dokumentacija za API se nalazi na
+https://developers.google.com/calendar/v3/reference/ .
+
+Aplikacija treba sadržavati login stranicu i glavnu stranicu sa sadržajem.
+Potrebno je imati sljedeće funkcionalnosti:
+- Login na prvoj stranici u aplikaciju putem Google OAuth-a, nakon čega se korisnik
+  preusmjerava na glavnu stranicu
+- Prikaz događaja iz korisnikovog kalendara na glavnoj stranici, dodavanje novih te
+  brisanje postojećih
+  
+Po defaultu, na glavnoj stranici se prikazuju događaji unutar sljedećih 7 dana (od trenutnog dana). Osim toga, vremenski raspon prikaza može se postaviti na 1, 7 ili 30 narednih dana.
+Izgled događaja treba biti jednostavan (ime, datum i vrijeme početka i završetka). Zbog jednostavnosti, svi događaji počinju i završavaju na isti dan. Svaki događaj također sadrži i akciju za brisanje.
+
+Događaje je potrebno prikazati u listi. Događaji su sortirani po vremenu početka i grupirani po danu (izgled kalendara ne treba oponašati izgled Google Calendara, već treba imati oblik jednostavne liste). Ukoliko je vremenski raspon 30 dana, događaje je potrebno grupirati po tjednima, a ne po danima.
+
+Osim prikazivanja, aplikacija mora podržavati i dodavanje novih događaja, odnosno brisanje postojećih. Dodavanje događaja također mora biti jednostavno (samo ime, te datum i vrijeme početka i završetka - zanemariti dodatne opcije kao što su attendees , repeat-anje, itd).
+
+Što se tiče user interfacea za dodavanje novih događaja, to može bili ili unutar postojeće stranice ili na novoj stranici (ili nekako treće).
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
