@@ -5,7 +5,7 @@ import GoogleLogin from 'react-google-login';
 
 function LoginPage(props) {
   const responseGoogle = (response) => {
-    localStorage.setItem('accessToken', response.Zi.access_token);
+    localStorage.setItem('accessToken', response.accessToken);
     localStorage.setItem('loggedIn', true);
     props.history.push('/home');
   };
